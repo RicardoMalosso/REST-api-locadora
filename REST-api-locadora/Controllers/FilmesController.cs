@@ -25,14 +25,14 @@ namespace REST_api_locadora.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Filme>>> GetFilmes()
         {
-            return await _context.Filmes.Where(e => !e.isDeleted).ToListAsync();
+            return await _context.Filmes.Where(e => !e.IsDeleted).ToListAsync();
         }
 
         // GET: api/Filmes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Filme>> GetFilme(long id)
         {
-            var filme = await _context.Filmes.Where(e => !e.isDeleted && e.Id == id).FirstOrDefaultAsync();
+            var filme = await _context.Filmes.Where(e => !e.IsDeleted && e.Id == id).FirstOrDefaultAsync();
 
             if (filme == null)
             {
@@ -78,7 +78,6 @@ namespace REST_api_locadora.Controllers
         [HttpPost]
         public async Task<ActionResult<Filme>> PostFilme(Filme filme)
         {
-            Trace.WriteLine("In Post");
             _context.Filmes.Add(filme);
             await _context.SaveChangesAsync();
 
@@ -97,8 +96,7 @@ namespace REST_api_locadora.Controllers
             {
                 return NotFound();
             }
-            filme.isDeleted = true;
-            //_context.Filmes.Remove(filme);
+            filme.IsDeleted = true;
             await _context.SaveChangesAsync();
 
             return NoContent();

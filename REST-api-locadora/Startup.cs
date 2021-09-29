@@ -25,6 +25,10 @@ namespace REST_api_locadora
 
             services.AddDbContext<FilmeContext>(opt =>
                                                opt.UseInMemoryDatabase("Filme"));
+            services.AddDbContext<ClienteContext>(opt =>
+                                   opt.UseInMemoryDatabase("Cliente"));
+            services.AddDbContext<LocacaoContext>(opt =>
+                                   opt.UseInMemoryDatabase("Locacao"));
             //services.AddSwaggerGen(c =>
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "REST_api_locadora", Version = "v1" });

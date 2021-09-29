@@ -15,6 +15,6 @@ namespace REST_api_locadora.Models
         //limite de dias para o retorno. Default 7 dias
         public int limitInDays { get; set; } = 7;
 
-        public bool isDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
     }
 }
