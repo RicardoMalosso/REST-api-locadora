@@ -14,9 +14,9 @@ namespace REST_api_locadora.Controllers
     [ApiController]
     public class FilmesController : ControllerBase
     {
-        private readonly FilmeContext _context;
+        private readonly LocadoraContext _context;
 
-        public FilmesController(FilmeContext context)
+        public FilmesController(LocadoraContext context)
         {
             _context = context;
         }

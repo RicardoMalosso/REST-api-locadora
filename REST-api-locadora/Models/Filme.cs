@@ -9,12 +9,6 @@ namespace REST_api_locadora.Models
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public bool Available { get; set; } = true;
-
-        public DateTime? rentalDate { get; set; } = null;
-        //limite de dias para o retorno. Default 7 dias
-        public int limitInDays { get; set; } = 7;
-
         public bool IsDeleted { get; set; } = false;
     }
 }

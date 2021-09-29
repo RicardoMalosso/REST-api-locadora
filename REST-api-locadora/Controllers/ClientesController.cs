@@ -13,9 +13,9 @@ namespace REST_api_locadora.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
-        private readonly ClienteContext _context;
+        private readonly LocadoraContext _context;
 
-        public ClientesController(ClienteContext context)
+        public ClientesController(LocadoraContext context)
         {
             _context = context;
         }

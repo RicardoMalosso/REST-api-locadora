@@ -13,9 +13,9 @@ namespace REST_api_locadora.Controllers
     [ApiController]
     public class LocacoesController : ControllerBase
     {
-        private readonly LocacaoContext _context;
+        private readonly LocadoraContext _context;
 
-        public LocacoesController(LocacaoContext context)
+        public LocacoesController(LocadoraContext context)
         {
             _context = context;
         }
@@ -79,26 +79,53 @@ namespace REST_api_locadora.Controllers
         [HttpPost]
         public async Task<ActionResult<Locacao>> PostLocacao(Locacao locacao)
         {
-            if (locacao.MovieId == 0)
+            Filme filmeAAlugar = _context.Filmes.Find(locacao.MovieId);
+            Cliente locatario = _context.Clientes.Find(locacao.RenterId);
+            if (locatario == null || locatario.IsDeleted)
             {
-                return BadRequest("A locação deve ter um id de filme.");
+                return BadRequest("O id do Cliente deve ser válido.");
             }
-            if (locacao.RenterId == 0)
-            {
-                return BadRequest("A locação deve ter um id de cliente.");
+            if (filmeAAlugar == null || filmeAAlugar.IsDeleted)
+                {
+                return BadRequest("O id do Filme deve ser válido.");
             }
             if (isMovieAlreadyRented(locacao.MovieId))
             {
                 return BadRequest("O filme já está alugado.");
             }
-            //todo: validar que o id do cliente e do filme existem
 
             _context.Locacoes.Add(locacao);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLocacao", new { id = locacao.Id }, locacao);
         }
+        //POST: api/Locacoes/retornar/5
+        [HttpPost("retornar/{id}")]
+        public async Task<IActionResult> RetornarLocacao(long id)
+        {
+            var locacao = await _context.Locacoes.FindAsync(id);
+            if (locacao == null)
+            {
+                return NotFound();
+            }
+            if (locacao.ReturnDate.HasValue)
+            {
+                return BadRequest("A locação já foi entregue.");
+            }
 
+            locacao.IsReturned = true;
+            locacao.RentalDate = null;
+            locacao.ReturnDate = DateTime.Now;
+            await _context.SaveChangesAsync();
+            if (locacao.RentalDate.HasValue)
+            {
+                if (DateTime.Today.Subtract(locacao.RentalDate.Value) > new TimeSpan(locacao.RentalPeriod, 0, 0, 0))
+                {
+                    return Ok("Entrega atrasada.");
+                }
+            }
+            return Ok();
+        }
         // DELETE: api/Locacaos/5
         //DELETE apenas muda a prop isDeleted pra True, já que um
         //dos requisitos de negócio é que Não é permitido excluir fisicamente um registro

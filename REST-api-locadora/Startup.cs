@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using REST_api_locadora.Models;
+using Microsoft.OpenApi.Models;
 
 namespace REST_api_locadora
 {
@@ -23,16 +24,16 @@ namespace REST_api_locadora
 
             services.AddControllers();
 
-            services.AddDbContext<FilmeContext>(opt =>
-                                               opt.UseInMemoryDatabase("Filme"));
-            services.AddDbContext<ClienteContext>(opt =>
-                                   opt.UseInMemoryDatabase("Cliente"));
-            services.AddDbContext<LocacaoContext>(opt =>
-                                   opt.UseInMemoryDatabase("Locacao"));
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "REST_api_locadora", Version = "v1" });
-            //});
+            services.AddDbContext<LocadoraContext>(opt => {
+                opt.UseInMemoryDatabase("Filme");
+                opt.UseInMemoryDatabase("Cliente");
+                opt.UseInMemoryDatabase("Locacao");
+                });
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "REST_api_locadora", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,8 +42,8 @@ namespace REST_api_locadora
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseSwagger();
-                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "REST_api_locadora v1"));
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "REST_api_locadora v1"));
             }
 
             app.UseHttpsRedirection();

@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace REST_api_locadora.Models
 {
-    public class FilmeContext : DbContext
+    public class LocadoraContext : DbContext
     {
-        public FilmeContext(DbContextOptions<FilmeContext> options) : base(options)
+        public LocadoraContext(DbContextOptions<LocadoraContext> options) : base(options)
         {
 
         }
+        public DbSet<Locacao> Locacoes { get; set; }
         public DbSet<Filme> Filmes { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
     }
 }
