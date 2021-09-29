@@ -77,7 +77,7 @@ namespace REST_api_locadora.Controllers
         [HttpPost]
         public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
         {
-            if (cliente.Name == "")
+            if (!(cliente.Name is string) || cliente.Name.Length == 0)
             {
                 return BadRequest("O cliente deve ter um nome.");
             }

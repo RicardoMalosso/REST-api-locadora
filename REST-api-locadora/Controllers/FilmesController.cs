@@ -42,46 +42,18 @@ namespace REST_api_locadora.Controllers
             return filme;
         }
 
-        // PUT: api/Filmes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFilme(long id, Filme filme)
-        {
-            if (id != filme.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(filme).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FilmeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
+        
         // POST: api/Filmes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Filme>> PostFilme(Filme filme)
         {
+            if (!(filme.Name is string) || filme.Name.Length == 0){
+                return BadRequest("O filme deve ter um nome.");
+            }
             _context.Filmes.Add(filme);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetFilme", new { id = filme.Id }, filme);
             return CreatedAtAction(nameof(GetFilme), new { id = filme.Id }, filme);
         }
 

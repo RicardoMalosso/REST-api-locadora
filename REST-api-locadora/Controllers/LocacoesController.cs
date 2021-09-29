@@ -81,11 +81,12 @@ namespace REST_api_locadora.Controllers
         {
             Filme filmeAAlugar = _context.Filmes.Find(locacao.MovieId);
             Cliente locatario = _context.Clientes.Find(locacao.RenterId);
-            if (locatario == null || locatario.IsDeleted)
+
+            if (!ClienteExists(locatario))
             {
                 return BadRequest("O id do Cliente deve ser válido.");
             }
-            if (filmeAAlugar == null || filmeAAlugar.IsDeleted)
+            if (!FilmeExists(filmeAAlugar))
                 {
                 return BadRequest("O id do Filme deve ser válido.");
             }
@@ -151,6 +152,15 @@ namespace REST_api_locadora.Controllers
         private bool isMovieAlreadyRented(long movieId)
         {
             return _context.Locacoes.Any(e => e.MovieId == movieId && !e.IsDeleted && !e.IsReturned);
+        }
+
+        private bool ClienteExists(Cliente? cliente)
+        {
+            return !(cliente == null || cliente.IsDeleted);
+        }
+        private bool FilmeExists(Filme? filme)
+        {
+            return !(filme == null || filme.IsDeleted);
         }
     }
 }
