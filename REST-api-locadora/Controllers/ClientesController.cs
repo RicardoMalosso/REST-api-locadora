@@ -112,11 +112,11 @@ namespace REST_api_locadora.Controllers
 
         private bool ClienteExists(long id)
         {
-            return _context.Clientes.Any(e => e.Id == id);
+            return _context.Clientes.Any(e => e.Id == id && e.IsDeleted == false);
         }
         private bool ClienteExistsByName(string name)
         {
-            return _context.Clientes.Any(e => e.Name == name);
+            return _context.Clientes.Any(e => e.Name == name && e.IsDeleted == false);
         }
     }
 }

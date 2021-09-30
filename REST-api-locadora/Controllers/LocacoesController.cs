@@ -100,11 +100,11 @@ namespace REST_api_locadora.Controllers
 
             return CreatedAtAction("GetLocacao", new { id = locacao.Id }, locacao);
         }
-        //POST: api/Locacoes/retornar/5
-        [HttpPost("retornar/{id}")]
-        public async Task<IActionResult> RetornarLocacao(long id)
+        //POST: api/Locacoes/retornar/
+        [HttpPost("retornar/")]
+        public async Task<IActionResult> RetornarLocacao(Locacao loc)
         {
-            var locacao = await _context.Locacoes.FindAsync(id);
+            var locacao = await _context.Locacoes.FindAsync(loc.Id);
             if (locacao == null)
             {
                 return NotFound();

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>REST_api_locadora</RootNamespace>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
